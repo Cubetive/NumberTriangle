@@ -89,8 +89,16 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
+        // Initialize current node
+        NumberTriangle currNode = this;
+        // Implement the iterative approach
+        for (String direction : path.split("")) {
+            if (direction.equals("l"))
+                currNode = currNode.left;
+            else if (direction.equals("r"))
+                currNode = currNode.right;
+        }
+        return currNode.getRoot();
     }
 
     /** Read in the NumberTriangle structure from a file.
