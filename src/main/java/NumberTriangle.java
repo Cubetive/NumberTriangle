@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -109,8 +110,7 @@ public class NumberTriangle {
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-
-        // TODO define any variables that you want to use to store things
+        ArrayList<NumberTriangle> currNodeList = new ArrayList<NumberTriangle>(); // Temp array list
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -119,10 +119,36 @@ public class NumberTriangle {
         String line = br.readLine();
         while (line != null) {
 
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
+            if (top == null) {
+                // If top is null, then the first line will always be the line with a single number
+                top = new NumberTriangle(Integer.parseInt(line));
+                currNodeList.add(top);
+            } else {
+                // Creating an empty NumberTriangle ArrayList to replace tempNodes after finishing the process
+                ArrayList<NumberTriangle> nodeList = new ArrayList<NumberTriangle>();
 
-            // TODO process the line
+                // From 2nd line onwards
+                String[] numberStrings = line.split(" ");
+                int[] numbers = new int[numberStrings.length];
+                // Converting strings to integers and put them in the numbers array
+                for (int i = 0; i < numberStrings.length; i++) {
+                    numbers[i] = Integer.parseInt(numberStrings[i]);
+                }
+
+                // Creating new nodes and setting left + right nodes
+                for (int i = 0; i < numbers.length; i++) {
+                    NumberTriangle node = new NumberTriangle(numbers[i]);
+                    // Add node as the right node
+                    if (i > 0) currNodeList.get(i - 1).setRight(node);
+                    // Add node as the left node
+                    if (i < numbers.length - 1) currNodeList.get(i).setLeft(node);
+                    // Add node to new nodeList
+                    nodeList.add(node);
+                }
+
+                // Replace old nodeList with new nodeList
+                currNodeList = nodeList;
+            }
 
             //read the next line
             line = br.readLine();
